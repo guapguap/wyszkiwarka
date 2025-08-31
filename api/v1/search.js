@@ -3,7 +3,7 @@ import path from "path";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const FILES = fs.readdirSync(DATA_DIR).filter(f => f.endsWith(".txt"));
-const ALLOWED_DOMAIN = "https://wyszkiwarka.vercel.app";
+const ALLOWED_DOMAIN = "https://leaki.vercel.app";
 
 export default function handler(req, res) {
   const referer = req.headers.referer || "";
@@ -28,3 +28,4 @@ export default function handler(req, res) {
 
   res.status(200).json({ items: results });
 }
+
