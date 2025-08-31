@@ -1,8 +1,7 @@
-// api/search.js
 import fs from "fs";
 import path from "path";
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   const q = (req.query.q || "").trim();
   if (!q) return res.status(200).json({ items: [] });
 
@@ -15,4 +14,9 @@ export default async function handler(req, res) {
     for (const line of content.split(/\r?\n/)) {
       if (!line) continue;
       const [nick, ip] = line.split(":");
-      if (nick === q) {
+      if (nick === q) results.push({ nick, ip, source: file });
+    }
+  }
+
+  res.status(200).json({ items: results });
+}
