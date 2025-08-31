@@ -26,7 +26,7 @@ async function searchNick(nickInput) {
   loadingDiv.style.display = "flex";
 
   try {
-    const res = await fetch(`/api/search?q=${encodeURIComponent(nickInput)}`);
+    const res = await fetch(`/api/v1/search?q=${encodeURIComponent(nickInput)}`);
     const data = await res.json();
 
     if (!data.items || data.items.length === 0) {
@@ -180,4 +180,5 @@ function renderRecent() {
     recentDiv.appendChild(div);
   });
 }
+
 
