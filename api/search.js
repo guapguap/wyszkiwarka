@@ -12,11 +12,11 @@ const FILES = fs.readdirSync(DATA_DIR).filter(f => f.endsWith(".txt"));
 
 app.get("/api/search", (req, res) => {
   const key = req.headers["x-api-key"] || req.query.key;
-  if (key !== API_KEY) {
+  if (key && key !== API_KEY) {
     return res.status(401).json({ error: "Nieautoryzowany dostęp" });
   }
 
-  const q = (req.query.q || "").trim();
+  const q = (req.query.q || "").trim().toLowerCase();
   if (!q) return res.json({ items: [] });
 
   const results = [];
@@ -25,7 +25,7 @@ app.get("/api/search", (req, res) => {
     for (const line of content.split(/\r?\n/)) {
       if (!line) continue;
       const [nick, ip] = line.split(":");
-      if (nick === q) {
+      if (nick.toLowerCase() === q) {
         results.push({ nick, ip, source: file });
       }
     }
