@@ -23,11 +23,10 @@ input.addEventListener("keydown", async (e) => {
 });
 
 async function searchNick(nickInput) {
-  // Pokaż loading
   loadingDiv.style.display = "flex";
 
   try {
-    const res = await fetch(`http://localhost:3000/api/search?q=${encodeURIComponent(nickInput)}`);
+    const res = await fetch(`/api/search?q=${encodeURIComponent(nickInput)}`);
     const data = await res.json();
 
     if (!data.items || data.items.length === 0) {
@@ -68,7 +67,7 @@ function renderResults(items) {
   items.forEach(item => {
     const card = document.createElement("div");
     card.className = "card";
-    lockedFields.set(card, {}); // inicjalizacja locków dla pól w tej karcie
+    lockedFields.set(card, {});
 
     const fields = [
       { label: "NAZWA", value: item.nicks[0] },
@@ -102,12 +101,11 @@ function renderResults(items) {
 
 function copyField(card, fieldName, text, button, whiteDuration = 0.1) {
   const cardLocks = lockedFields.get(card);
-  if (cardLocks[fieldName]) return; // jeśli pole aktywne -> ignoruj
+  if (cardLocks[fieldName]) return;
   cardLocks[fieldName] = true;
 
   navigator.clipboard.writeText(text);
 
-  // Kolor svg tylko klikniętego przycisku
   const svg = button.querySelector("svg");
   svg.style.fill = "#fff";
   setTimeout(() => { svg.style.fill = "#7c3aed"; }, whiteDuration * 1000);
@@ -162,7 +160,7 @@ function renderRecent() {
     img.className = "avatar";
     img.src = "steve.png";
 
-    fetch(`http://localhost:3000/api/uuid?nick=${encodeURIComponent(nick)}`)
+    fetch(`/api/uuid?nick=${encodeURIComponent(nick)}`)
       .then(res => res.json())
       .then(data => {
         if (data.uuid) img.src = `https://crafatar.com/avatars/${data.uuid}?size=32&overlay`;
