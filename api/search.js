@@ -17,8 +17,11 @@ export default function handler(req, res) {
   const q = (req.query.q || "").trim().toLowerCase();
   if (!q) return res.status(200).json({ items: [] });
 
-  const files = fs.readdirSync(DATA_DIR).filter(f => f.endsWith(".txt"));
-  const matches = [];
+  const files = fs.readdirSync(DATA_DIR)
+                  .filter(f => f.endsWith(".txt"))
+                  .sort((a, b) => getFileMtime(b) - getFileMtime(a)); // od najnowszego
+
+  let result = null;
 
   for (const file of files) {
     const content = fs.readFileSync(path.join(DATA_DIR, file), "utf8");
@@ -26,16 +29,14 @@ export default function handler(req, res) {
       if (!line) continue;
       const [nick, ip] = line.split(":");
       if (nick.toLowerCase() === q) {
-        matches.push({ nick, ip, source: file, mtime: getFileMtime(file) });
+        result = { nick, ip, source: file };
+        break;
       }
     }
+    if (result) break;
   }
 
-  if (matches.length === 0) return res.status(200).json({ items: [] });
+  if (!result) return res.status(200).json({ items: [] });
 
-  const newestMtime = Math.max(...matches.map(m => m.mtime));
-  const newestMatches = matches.filter(m => m.mtime === newestMtime)
-                               .map(({ nick, ip, source }) => ({ nick, ip, source }));
-
-  res.status(200).json({ items: newestMatches });
+  res.status(200).json({ items: [result] });
 }
