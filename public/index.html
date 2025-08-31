@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nick Search</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <aside>
+    <h2>Ostatnie wyszukiwania</h2>
+    <div id="recent"></div>
+  </aside>
+  <main>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Wpisz nick">
+      <button id="searchBtn">
+        Szukaj
+        <svg class="search-icon" viewBox="0 0 512 512">
+          <circle cx="221.09" cy="221.09" r="157.09" fill="none" stroke="#fff" stroke-width="32"/>
+          <line x1="338.29" y1="338.29" x2="448" y2="448" stroke="#fff" stroke-width="32" stroke-linecap="round"/>
+        </svg>
+        <span class="shine"></span>
+      </button>
+    </div>
+
+    <div id="loading" class="loading" style="display:none;">
+      <div class="spinner"></div>
+      <span>Szukanie...</span>
+    </div>
+
+    <div id="results"></div>
+  </main>
+</div>
+<script type="module" src="script.js"></script>
+</body>
+</html>
