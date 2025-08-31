@@ -1,23 +1,18 @@
 import fs from "fs";
 import path from "path";
-import express from "express";
-
-const app = express();
-const PORT = 3000;
-
-const API_KEY = "ErJBcG9eh8wnBR5";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const FILES = fs.readdirSync(DATA_DIR).filter(f => f.endsWith(".txt"));
+const API_KEY = "ErJBcG9eh8wnBR5";
 
-app.get("/api/search", (req, res) => {
+export default function handler(req, res) {
   const key = req.headers["x-api-key"] || req.query.key;
-  if (key && key !== API_KEY) {
+  if (key !== API_KEY) {
     return res.status(401).json({ error: "Nieautoryzowany dostęp" });
   }
 
   const q = (req.query.q || "").trim().toLowerCase();
-  if (!q) return res.json({ items: [] });
+  if (!q) return res.status(200).json({ items: [] });
 
   const results = [];
   for (const file of FILES) {
@@ -31,9 +26,5 @@ app.get("/api/search", (req, res) => {
     }
   }
 
-  res.json({ items: results });
-});
-
-app.listen(PORT, () => {
-  console.log(`API running on http://localhost:${PORT}`);
-});
+  res.status(200).json({ items: results });
+}
