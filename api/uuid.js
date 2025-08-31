@@ -1,4 +1,3 @@
-// api/uuid.js
 import fetch from "node-fetch";
 
 export default async function handler(req, res) {
@@ -8,11 +7,9 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(`https://api.mojang.com/users/profiles/minecraft/${nick}`);
     if (!response.ok) return res.status(200).json({ uuid: null });
-
     const data = await response.json();
     res.status(200).json({ uuid: data.id });
-  } catch (err) {
-    console.error(err);
+  } catch {
     res.status(200).json({ uuid: null });
   }
 }
