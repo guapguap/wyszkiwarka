@@ -5,8 +5,8 @@ const recentDiv = document.getElementById("recent");
 const loadingDiv = document.getElementById("loading");
 
 let recent = [];
-const lockedFields = new WeakMap(); // każda karta ma swój lock dla pól
-const activeNotifications = []; // wszystkie aktywne powiadomienia
+const lockedFields = new WeakMap();
+const activeNotifications = [];
 
 btn.addEventListener("click", async () => {
   const q = input.value.trim();
@@ -180,3 +180,4 @@ function renderRecent() {
     recentDiv.appendChild(div);
   });
 }
+
